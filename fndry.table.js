@@ -53,7 +53,7 @@
              */
             $scope.insertRow = function(index) {
                 var n = {};
-                angular.forEach($scope.headers, function(key, value){
+                angular.forEach($scope.headers, function(value, key){
                     n[key] = '';
                 })
                 if (index != undefined) {
@@ -85,7 +85,6 @@
              * Save the Json data to the set element id value
              */
             $scope.saveJsonToInput = function(){
-                console.log(saveToElementId);
                 if (saveToElementId != null) {
                     document.getElementById(saveToElementId).value = $scope.export();
                 }
@@ -96,22 +95,22 @@
         return {
             restrict: 'AE',
             controller: 'TableCtrl',
-            template: '<table class="table table-stripped">' +
+            template: '<table class="table table-stripped table-condensed">' +
             '   <thead>' +
             '       <tr>' +
-            '           <th ng-repeat="(key, value) in headers" class="ft-{{key}}">{{value}}</th>' +
+            '           <th ng-repeat="(key, value) in headers" class="ft-{{key | lowercase}}">{{value}}</th>' +
             '           <th>Options</th>' +
             '       </tr>' +
             '   </thead>' +
             '   <tbody>' +
             '       <tr ng-repeat="record in data">' +
-            '           <td ng-repeat="(key, value) in record" class="ft-{{key}}"><input ng-model="record[key]" class="form-control" label="{{key}}" ></td>' +
-        '               <td><button ng-click="insertRow($index)" class="btn btn-info btn-sm">Insert</button> <button ng-click="deleteRow($index)" class="btn btn-danger btn-sm">Delete</button></td>' +
+            '           <td ng-repeat="(key, value) in record" class="ft-{{key | lowercase}}"><input ng-model="record[key]" class="form-control" label="{{key}}" ></td>' +
+            '               <td nowrap><button ng-click="insertRow($index); $event.stopPropagation(); $event.preventDefault();" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-plus"></i></button> <button ng-click="deleteRow($index); $event.stopPropagation(); $event.preventDefault();" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove"></i></button></td>' +
             '       </tr>' +
             '   </tbody>' +
             '</table>' +
-            '<button ng-click="insertRow()" class="btn btn-info">Insert Row</button> ' +
-            '<button ng-click="saveJsonToInput()" class="btn btn-success">Save</button>',
+            '<button ng-click="insertRow(); $event.stopPropagation(); $event.preventDefault();" class="btn btn-info">Insert Row</button> ' +
+            '<button ng-click="saveJsonToInput(); $event.stopPropagation(); $event.preventDefault();" class="btn btn-success">Save</button>',
             link: {
                 pre: function preLink(scope, element, attrs, ctrl) {
                     var options = angular.merge({ftHeader: [], ftData: [], ftEditable: true, ftSaveToElementId: null}, attrs);
@@ -129,3 +128,5 @@
         };
     });
 }());
+
+stylistaApp.requires.push('fndry.table');
