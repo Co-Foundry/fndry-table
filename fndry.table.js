@@ -11,7 +11,6 @@
         '$timeout',
         function controller($scope, $element, $timeout) {
 
-            var editable = false;
             var saveToElementId = null;
 
             $scope.headers = {};
@@ -24,7 +23,6 @@
                         $scope.headers = angular.fromJson(data);
                         break;
                     case 'object':
-                    case 'array':
                         $scope.headers = data;
                         break;
                 }
@@ -36,7 +34,6 @@
                     case 'string':
                         $scope.data = angular.fromJson(data);
                         break;
-                    case 'object':
                     case 'array':
                         $scope.data = data;
                         break;
@@ -47,12 +44,18 @@
                 saveToElementId = id;
             }
 
+            /**
+             * Insert a new row
+             *
+             * Uses the header to build the object
+             *
+             * @param int index Where to insert the row after
+             */
             $scope.insertRow = function(index) {
                 var n = {};
                 angular.forEach($scope.headers, function(key, value){
-                    n[key] = ''
+                    n[key] = '';
                 })
-                //Object.assign(n, $scope.headers);
                 if (index != undefined) {
                     $scope.data.splice(index+1, 0, n);
                 } else {
@@ -60,14 +63,27 @@
                 }
             }
 
+            /**
+             * Delete a row
+             *
+             * @param int index The row index to delete
+             */
             $scope.deleteRow = function(index){
                 $scope.data.splice(index, 1);
             }
 
+            /**
+             * Export the data to a json string
+             *
+             * @returns {string|undefined|*} The exported data
+             */
             $scope.export = function(){
                 return angular.toJson($scope.data);
             }
 
+            /**
+             * Save the Json data to the set element id value
+             */
             $scope.saveJsonToInput = function(){
                 console.log(saveToElementId);
                 if (saveToElementId != null) {
@@ -104,9 +120,6 @@
                     }
                     if (options.ftData) {
                         ctrl.setData(options.ftData);
-                    }
-                    if (options.ftEditable) {
-                        ctrl.editable = true;
                     }
                     if (options.ftSaveToElementId) {
                         ctrl.setSaveToElementId(options.ftSaveToElementId);
