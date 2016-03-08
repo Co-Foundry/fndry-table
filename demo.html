@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Foundry Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js" type="text/javascript"></script>
+    <script src="fndry.table.js" type="text/javascript"></script>
+    <script>
+        app = angular.module('tableTest', ['fndry.table']);
+    </script>
+</head>
+<body ng-app="tableTest">
+    <div class="container">
+        <h1>Foundry AngularJS Table demo</h1>
+        <fndry-table ft-header='{"id":"ID","title":"The Title","description":"Description"}' ft-data='[{"id":"1","title":"Title 1","description":"Description 1"},{"id":"2","title":"Title 2","description":"Description 2"}]' ft-save-to-element-id="table"></fndry-table>
+        <hr />
+        <textarea name="table" id="table" rows="5" class="form-control"></textarea>
+        <hr>
+        &copy; Copyright 2016, Co-Foundry (Pty) Ltd. Released under the MIT License.
+    </div>
+</body>
+</html>

@@ -1,5 +1,5 @@
 /*!
- * angular-table 0.0.0
+ * angular-table 0.0.1
  * Greg Gunner, http://www.co-foundry.co.za/
  * License: MIT
  */
@@ -15,7 +15,7 @@
             var saveToElementId = null;
 
             $scope.headers = {};
-            $scope.body = [];
+            $scope.data = [];
 
             this.setHeaders = function(data)
             {
@@ -30,15 +30,15 @@
                 }
             }
 
-            this.setBody = function(data)
+            this.setData = function(data)
             {
                 switch (typeof(data)) {
                     case 'string':
-                        $scope.body = angular.fromJson(data);
+                        $scope.data = angular.fromJson(data);
                         break;
                     case 'object':
                     case 'array':
-                        $scope.body = data;
+                        $scope.data = data;
                         break;
                 }
             }
@@ -54,18 +54,18 @@
                 })
                 //Object.assign(n, $scope.headers);
                 if (index != undefined) {
-                    $scope.body.splice(index+1, 0, n);
+                    $scope.data.splice(index+1, 0, n);
                 } else {
-                    $scope.body.push(n);
+                    $scope.data.push(n);
                 }
             }
 
             $scope.deleteRow = function(index){
-                $scope.body.splice(index, 1);
+                $scope.data.splice(index, 1);
             }
 
             $scope.export = function(){
-                return angular.toJson($scope.body);
+                return angular.toJson($scope.data);
             }
 
             $scope.saveJsonToInput = function(){
@@ -80,35 +80,35 @@
         return {
             restrict: 'AE',
             controller: 'TableCtrl',
-            template: '<table>' +
+            template: '<table class="table table-stripped">' +
             '   <thead>' +
             '       <tr>' +
             '           <th ng-repeat="(key, value) in headers" class="ft-{{key}}">{{value}}</th>' +
+            '           <th>Options</th>' +
             '       </tr>' +
             '   </thead>' +
             '   <tbody>' +
-            '       <tr ng-repeat="row in body">' +
-            '           <td ng-repeat="(key, value) in row" class="ft-{{key}}"><input ng-model="row[key]" ></td>' +
-        '               <td><button ng-click="insertRow($index)">Insert</button> <button ng-click="deleteRow($index)">Delete</button></td>' +
+            '       <tr ng-repeat="record in data">' +
+            '           <td ng-repeat="(key, value) in record" class="ft-{{key}}"><input ng-model="record[key]" class="form-control" label="{{key}}" ></td>' +
+        '               <td><button ng-click="insertRow($index)" class="btn btn-info btn-sm">Insert</button> <button ng-click="deleteRow($index)" class="btn btn-danger btn-sm">Delete</button></td>' +
             '       </tr>' +
             '   </tbody>' +
             '</table>' +
-            '<button ng-click="insertRow()">Insert Row</button>' +
-            '<button ng-click="saveJsonToInput()">Save</button>' +
-            '{{body | json}}',
+            '<button ng-click="insertRow()" class="btn btn-info">Insert Row</button> ' +
+            '<button ng-click="saveJsonToInput()" class="btn btn-success">Save</button>',
             link: {
                 pre: function preLink(scope, element, attrs, ctrl) {
-                    var options = angular.merge({ftHeader: [], ftBody: [], ftEditable: true, ftSaveToElementId: null}, attrs);
+                    var options = angular.merge({ftHeader: [], ftData: [], ftEditable: true, ftSaveToElementId: null}, attrs);
                     if (options.ftHeader) {
                         ctrl.setHeaders(options.ftHeader);
                     }
-                    if (options.ftBody) {
-                        ctrl.setBody(options.ftBody);
+                    if (options.ftData) {
+                        ctrl.setData(options.ftData);
                     }
                     if (options.ftEditable) {
                         ctrl.editable = true;
                     }
-                    if (options.ftBody) {
+                    if (options.ftSaveToElementId) {
                         ctrl.setSaveToElementId(options.ftSaveToElementId);
                     }
                 }
