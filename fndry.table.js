@@ -15,6 +15,7 @@
 
             $scope.headers = {};
             $scope.data = [];
+			$scope.saved = false;
 
             this.setHeaders = function(data)
             {
@@ -86,9 +87,16 @@
              */
             $scope.saveJsonToInput = function(){
                 if (saveToElementId != null) {
+					$scope.saved = true;
                     document.getElementById(saveToElementId).value = $scope.export();
                 }
             }
+
+			$scope.$watch(function(){
+				return $scope.data;
+			}, function(){
+				$scope.saved = false;
+			})
 
         }
     ]).directive('fndryTable', function() {
@@ -110,7 +118,7 @@
             '   </tbody>' +
             '</table>' +
             '<button ng-click="insertRow(); $event.stopPropagation(); $event.preventDefault();" class="btn btn-info">Insert Row</button> ' +
-            '<button ng-click="saveJsonToInput(); $event.stopPropagation(); $event.preventDefault();" class="btn btn-success">Save</button>',
+            '<button ng-click="saveJsonToInput(); $event.stopPropagation(); $event.preventDefault();" class="btn btn-success"><span ng-show="saved">Prepare</span><span ng-hide="saved">Prepared!</span></button>',
             link: {
                 pre: function preLink(scope, element, attrs, ctrl) {
                     var options = angular.merge({ftHeader: [], ftData: [], ftEditable: true, ftSaveToElementId: null}, attrs);
